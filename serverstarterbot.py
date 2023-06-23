@@ -7,7 +7,6 @@ import os
 import sys
 import time
 import mcstatus
-from wakeonlan import send_magic_packet
 from mcstatus import JavaServer
 
 #presence用
