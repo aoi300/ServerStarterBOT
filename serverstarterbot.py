@@ -1,33 +1,41 @@
-#!/bin/python3
+from asyncio import tasks
 import subprocess
-import asyncio
-import json
-import logging
 # インストールした discord.py を読み込む
 import discord
-from discord.ext import tasks
-
-# Discordのログを出力するように
-logging.basicConfig(level=logging.INFO)
-
-#jsonファイル読み込み準備
-with open('config.json') as f:
-    jsn = json.load(f)
-
-#TOKEN = open('token.txt').read()
-TOKEN = jsn["token"]
-f_name = jsn["jarfile"]
-maxMemory = jsn["maxMemory"]
-minMemory = jsn["minMemory"]
-
-# 接続に必要なオブジェクトを生成
-client = discord.Client()
+import asyncio
+import os
+import sys
+import time
+import mcstatus
+from wakeonlan import send_magic_packet
+from mcstatus import JavaServer
 
 #presence用
 idle = discord.Game("サーバー停止中")
 starting = discord.Game("サーバー起動中")
 
 
+server1 = JavaServer.lookup("自分のIP")
+try:
+    status = server1.status()
+    print("サーバーオンライン")
+except:
+    print("サーバーオフライン")
+
+os.chdir('C:\spigot')
+
+# TOKENとサーバーの情報
+TOKEN = 'DISCORDトークン'
+f_name = 'JAVAの名前 ○○.jar'
+maxMemory = '10G'  # 任意の最大メモリ割り当てサイズ
+minMemory = '10G'  # 任意の最小メモリ割り当てサイズ
+
+# 接続に必要なオブジェクトを生成
+intents = discord.Intents.default()
+intents.message_content=True
+client = discord.Client(intents=intents)
+
+# サーバー操作用
 class server_process:
 
     def __init__(self, f_name, maxMemory,minMemory):
@@ -99,12 +107,8 @@ async def on_message(message):
 
     if message.content == 'r.start':
         if server.server_is_running() is False:
-            #running = True
-            #await client.change_presence(activity=starting, status=discord.Status.online)
             await message.channel.send('サーバー起動します...')
             server.start()
-            #client.loop.create_task(server_checker(server))
-            #await server_checker.start(server)
         else:
             await message.channel.send('既に起動中です')
     elif message.content == "r.kill": # 緊急停止用
@@ -133,6 +137,26 @@ async def on_message(message):
             server.stop()
         else:
             await message.channel.send('既に終了しています')
+
+    elif message.content == 'r.status':
+        try:
+            status = server1.status() #server開いてるかのコマンド
+            print("ステータスリクエスト")
+            await message.channel.send('サーバーはオンラインです')
+        except:
+            print("ステータスリクエスト")
+            await message.channel.send('サーバーはオフラインです')
+
+    elif message.content == 'r.player':
+        try:
+            status = server1.status()
+            print("プレイヤーリクエスト")
+            await message.channel.send("サーバーには{0}人います".format(status.players.online))
+        except:
+            print("サーバーオフライン")
+            await message.channel.send("サーバーを起動してください")
+
+    
 
     #デバッグ用コマンドのためコメントアウト
     #elif message.content == 'r.get':
