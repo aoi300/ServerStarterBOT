@@ -19,3 +19,4 @@ python serverstarterbot.py
 ```
 /mcstart サーバーを起動
 /mcstop サーバーをを停止
+```
