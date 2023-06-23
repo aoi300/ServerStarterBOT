@@ -1,6 +1,0 @@
-{
-    "token": "abcdefghijklmnopqrstuvwxyz1234567890",
-    "jarfile": "servername.jar",
-    "minMemory": "1024M",
-    "maxMemory": "4096M"
-}
