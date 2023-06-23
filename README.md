@@ -4,11 +4,11 @@
 
 # 使い方
 
-すべてのファイルをマイクラ鯖の.jarファイルと同じところに置く
+自分のIPの所にIPv4とTOKEN、F_nameを埋めてください。
 
-config.jsonにBOTのTOKENと起動したい.jarファイル名を入力して、
+os.chdirの()中サーバーフォルダーの場所をお願いします。
 
-Windowsならバッチファイルを作成して
+そのあとWindowsならバッチファイルを作成して、完成
 
 ```
 python serverstarterbot.py
@@ -17,6 +17,9 @@ python serverstarterbot.py
 ## コマンド
 
 ```
-/mcstart サーバーを起動
-/mcstop サーバーをを停止
+/r.start サーバーを起動
+/r.stop サーバーをを停止
+/r.kill サーバー緊急停止用
+/r.status サーバー起動してるか?
+/r.player サーバー内のプレイヤー数
 ```
